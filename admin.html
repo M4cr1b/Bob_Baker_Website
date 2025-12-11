@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Bob Baker's Bakery</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="admin-body">
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h3>Bakery Admin</h3>
+            <p>Management System</p>
+        </div>
+        <ul class="sidebar-menu">
+            <li class="active"><a href="#"><i class="fa-solid fa-table-columns"></i> Dashboard</a></li>
+            <li><a href="#"><i class="fa-solid fa-clipboard-list"></i> Order Management</a></li>
+            <li><a href="#"><i class="fa-solid fa-box-open"></i> Product Inventory</a></li>
+            <li><a href="#"><i class="fa-solid fa-chart-line"></i> Sales Reports</a></li>
+            <li><a href="#"><i class="fa-solid fa-gear"></i> Settings</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <p>&copy; 2025 Bakery Admin</p>
+        </div>
+    </aside>
+
+    <main class="admin-content">
+        <header class="admin-topbar">
+            <div class="search-bar">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Search orders, products, customers...">
+            </div>
+            <div class="admin-profile">
+                <i class="fa-solid fa-bell"></i>
+                <div class="profile-info">
+                    <span>Admin User</span>
+                    <div class="avatar">AU</div>
+                </div>
+            </div>
+        </header>
+
+        <section class="stats-grid">
+            <div class="card">
+                <div>
+                    <h4>Total Orders Today</h4>
+                    <h2>47</h2>
+                    <p class="trend up">+12% from yesterday</p>
+                </div>
+                <div class="icon-box blue"><i class="fa-solid fa-cart-shopping"></i></div>
+            </div>
+            <div class="card">
+                <div>
+                    <h4>Total Revenue</h4>
+                    <h2>GH₵ 3,847</h2>
+                    <p class="trend up">+8% from yesterday</p>
+                </div>
+                <div class="icon-box green"><i class="fa-solid fa-dollar-sign"></i></div>
+            </div>
+            <div class="card">
+                <div>
+                    <h4>Low Stock Alerts</h4>
+                    <h2>5</h2>
+                    <p class="trend down">Items need restocking</p>
+                </div>
+                <div class="icon-box orange"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            </div>
+        </section>
+
+        <section class="recent-orders">
+            <h3>Recent Orders</h3>
+            <table class="order-table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer Name</th>
+                        <th>Items Ordered</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="order-rows">
+                    </tbody>
+            </table>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

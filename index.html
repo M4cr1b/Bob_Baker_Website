@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Bob Baker's Bakery</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="index.html" class="logo-link">
+            <div class="logo">
+                <i class="fa-solid fa-bread-slice"></i> Bob Baker's Bakery
+            </div>
+        </a>
+        
+        <ul class="nav-links">
+            <li><a href="index.html" class="nav-item">Home</a></li>
+            <li><a href="menu.html" class="nav-item">Menu</a></li>
+            <li><a href="contact.html" class="nav-item">Contact</a></li>
+        </ul>
+
+        <div class="cart-icon">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span class="cart-count">0</span>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-content">
+            <h1>Freshly Baked Bread,<br>Delivered to Your Door</h1>
+            <p>Order online and skip the line</p>
+            <a href="menu.html"><button class="btn-primary">View Menu</button></a>
+        </div>
+    </header>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4><i class="fa-solid fa-location-dot"></i> Location</h4>
+                <p>123 Baker Street<br>Accra, Ghana</p>
+            </div>
+            <div class="footer-section">
+                <h4><i class="fa-solid fa-phone"></i> Contact</h4>
+                <p>+233 24 123 4567</p>
+            </div>
+            <div class="footer-section">
+                <h4>Follow Us</h4>
+                <div class="socials">
+                    <i class="fa-brands fa-facebook"></i>
+                    <i class="fa-brands fa-instagram"></i>
+                    <i class="fa-brands fa-twitter"></i>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2025 Bob Baker's Bakery. All rights reserved.
+        </div>
+    </footer>
+    <div class="cart-overlay" id="cart-overlay">
+        <div class="cart-modal">
+            <div class="cart-header">
+                <h3>Your Cart</h3>
+                <i class="fa-solid fa-xmark close-cart" id="close-cart"></i>
+            </div>
+            
+            <div class="cart-items" id="cart-items">
+                <p style="text-align:center; margin-top: 20px; color:#888;">Your cart is empty.</p>
+            </div>
+    
+            <div class="cart-footer">
+                <div class="total">
+                    <span>Total:</span>
+                    <span id="cart-total">GH₵ 0.00</span>
+                </div>
+                <button class="checkout-btn">Checkout</button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

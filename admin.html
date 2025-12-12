@@ -38,6 +38,9 @@
                     <span>Admin User</span>
                     <div class="avatar">AU</div>
                 </div>
+                <button id="logout-btn" style="background:none; border:none; cursor:pointer; color:#ef4444; font-size:1.1rem; margin-left:10px;" title="Logout">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </button>
             </div>
         </header>
 
@@ -69,7 +72,13 @@
         </section>
 
         <section class="recent-orders">
-            <h3>Recent Orders</h3>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h3>Recent Orders</h3>
+                <button id="refresh-btn" class="btn-primary" style="padding: 8px 15px; font-size: 0.85rem; display: flex; gap: 8px; align-items: center;">
+                    <i class="fa-solid fa-rotate-right"></i> Refresh Data
+                </button>
+            </div>
+            
             <table class="order-table">
                 <thead>
                     <tr>
@@ -81,7 +90,8 @@
                     </tr>
                 </thead>
                 <tbody id="order-rows">
-                    </tbody>
+                    <tr><td colspan="5" style="text-align:center; color:#888;">Click "Refresh Data" to load orders.</td></tr>
+                </tbody>
             </table>
         </section>
     </main>

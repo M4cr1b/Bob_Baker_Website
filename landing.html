@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome - Bob Baker's Bakery</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .split-screen {
+            display: flex;
+            height: 100vh;
+            width: 100%;
+        }
+        .split-pane {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        .split-pane:hover { flex: 1.2; } /* Expands on hover */
+        
+        .customer-side {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=2072&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .admin-side {
+            background: #0F172A; /* Dark Admin Theme */
+        }
+
+        .role-icon { font-size: 4rem; margin-bottom: 1rem; }
+        .role-title { font-size: 2rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .role-desc { font-size: 1rem; opacity: 0.8; }
+    </style>
+</head>
+<body>
+
+    <div class="split-screen">
+        <a href="index.html" class="split-pane customer-side">
+            <i class="fa-solid fa-bread-slice role-icon"></i>
+            <div class="role-title">I am a Customer</div>
+            <p class="role-desc">Order fresh bread and pastries online.</p>
+        </a>
+
+        <a href="login.html" class="split-pane admin-side"> 
+            <i class="fa-solid fa-user-shield role-icon"></i>
+            <div class="role-title">I am an Admin</div>
+            <p class="role-desc">Manage orders, inventory, and sales.</p>
+        </a>
+    </div>
+
+</body>
+</html>

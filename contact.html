@@ -43,11 +43,11 @@
         <div class="footer-content">
             <div class="footer-section">
                 <h4><i class="fa-solid fa-location-dot"></i> Location</h4>
-                <p>123 Baker Street<br>Accra, Ghana</p>
+                <p>Next to GCTU, Tesano branch<br>Accra, Ghana</p>
             </div>
             <div class="footer-section">
                 <h4><i class="fa-solid fa-phone"></i> Contact</h4>
-                <p>+233 24 123 4567</p>
+                <p>+233 54 812 6480</p>
             </div>
             <div class="footer-section">
                 <h4>Follow Us</h4>
@@ -76,9 +76,35 @@
                     <span>Total:</span>
                     <span id="cart-total">GH₵ 0.00</span>
                 </div>
+
+                <div class="cart-form" style="margin-bottom: 15px; display: flex; flex-direction: column; gap: 10px;">
+                    <input type="text" id="customer-name" placeholder="Your Name" style="padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                    <input type="tel" id="customer-phone" placeholder="Phone Number" style="padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                    <select id="payment-method" style="padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                        <option value="" disabled selected>Select Payment Method</option>
+                        <option value="Cash on Delivery">Cash on Delivery</option>
+                        <option value="Mobile Money">Mobile Money</option>
+                    </select>
+                </div>
+                
                 <button class="checkout-btn">Checkout</button>
             </div>
         </div>
+    </div>
+
+    <div class="success-overlay" id="success-overlay">
+        <div class="success-modal">
+            <div class="success-icon">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h3>Order Received!</h3>
+            <p>Congratulations, your order has been completed. You will be called by our staff within 15 mins to confirm and make payment!</p>
+            <button class="close-success-btn" onclick="closeSuccessModal()">OK, Got it!</button>
+        </div>
+    </div>
+
+    <div class="loading-overlay" id="loader">
+        <div class="spinner"></div>
     </div>
     <script src="script.js"></script>
 </body>

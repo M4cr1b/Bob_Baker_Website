@@ -259,3 +259,72 @@ footer { background: #3E2723; color: #D7CCC8; padding: 3rem 5% 1rem; }
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+/* --- CONTACT PAGE STYLES --- */
+
+.contact-section {
+    padding: 3rem 5%;
+    background-color: var(--light-bg);
+    min-height: 60vh; /* Ensures it takes up space on large screens */
+}
+
+.contact-container {
+    max-width: 600px;
+    margin: 0 auto;
+    background: white;
+    padding: 2.5rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: left;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: var(--dark-brown);
+    font-size: 0.9rem;
+}
+
+.form-group input, 
+.form-group textarea {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus, 
+.form-group textarea:focus {
+    border-color: var(--primary-brown);
+}
+
+/* RESPONSIVE: Mobile Adjustments */
+@media (max-width: 768px) {
+    .contact-section {
+        padding: 2rem 5%;
+    }
+
+    .contact-container {
+        padding: 1.5rem;
+        width: 100%;
+    }
+
+    .page-header h2 {
+        font-size: 1.8rem;
+    }
+}
+

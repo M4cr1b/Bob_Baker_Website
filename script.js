@@ -4,6 +4,8 @@
 // REPLACE THIS with your actual n8n Production Webhook URL
 const N8N_ORDER_WEBHOOK = "https://n8n.srv1191414.hstgr.cloud/webhook-test/55790ae9-4c5f-4073-87c5-593b5d2364ed";
 const N8N_ADMIN_DATA_WEBHOOK = "https://n8n.srv1191414.hstgr.cloud/webhook-test/94ee3ade-06c5-4973-b56d-a09876a722ef";
+const N8N_UPDATE_STATUS_WEBHOOK = "https://n8n.srv1191414.hstgr.cloud/webhook-test/115435ed-2540-481c-8a7e-0fdc6af21ae1";
+const N8N_CONTACT_WEBHOOK = "https://n8n.srv1191414.hstgr.cloud/webhook-test/7a84a607-f7e1-4f12-9fd0-e81e393032ef";
 
 // --- SECURITY & AUTHENTICATION ---
 
@@ -209,55 +211,63 @@ async function loadAdminData() {
 
     if (!orderTableBody) return; 
 
-    // 1. UI Feedback: Show loading state
+    // 1. UI Feedback
     orderTableBody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Connecting to n8n...</td></tr>';
     if(refreshBtn) refreshBtn.disabled = true; 
-    if(refreshIcon) refreshIcon.classList.add('fa-spin'); // Make icon spin
+    if(refreshIcon) refreshIcon.classList.add('fa-spin'); 
 
     try {
-        console.log("Fetching from:", N8N_ADMIN_DATA_WEBHOOK);
-        
-        // 2. Fetch Data
-        // Your n8n "Respond to Webhook" node MUST return a JSON array like:
-        // [
-        //   { "id": "101", "customer": "John", "items": "Bread", "status": "Pending" },
-        //   { "id": "102", "customer": "Jane", "items": "Cake", "status": "Baked" }
-        // ]
         const response = await fetch(N8N_ADMIN_DATA_WEBHOOK, {
-            method: 'POST', // Or 'POST' depending on your n8n trigger
+            method: 'POST', 
             headers: { 'Content-Type': 'application/json' }
         });
 
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
-        const orders = await response.json();
-        console.log("Data received:", orders);
+        let orders = await response.json();
 
-        // 3. Clear Table
+        // Handle single object vs array
+        if (!Array.isArray(orders)) {
+            orders = [orders];
+        }
+
         orderTableBody.innerHTML = '';
 
-        // 4. Populate Table
         if (orders.length === 0) {
-            orderTableBody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No orders found in n8n.</td></tr>';
+            orderTableBody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No orders found.</td></tr>';
         } else {
             orders.forEach(order => {
-                let statusClass = '';
-                // Normalize status text to lowercase to match correctly
-                const status = order.status ? order.status.toLowerCase() : 'pending';
+                // Get the Row Number (Essential for Google Sheets updates)
+                // If your n8n Google Sheet node outputs "row_number", use that.
+                const rowNum = order.row_number || order.id; 
+                const customerName = order.Name || order['Customer Name'] || order.customer || 'Guest';
+                const orderItems = order['Product Name'] || order.items || 'Unknown Items';
+                const currentStatus = order.Status || 'Pending';
 
-                if(status.includes('deliver')) statusClass = 'status-delivered';
-                else if(status.includes('bake')) statusClass = 'status-baked';
-                else statusClass = 'status-pending';
+                // Create the Dropdown HTML
+                const statusOptions = ['Pending', 'Ready','Cancelled'];
+                let optionsHtml = '';
+                
+                statusOptions.forEach(opt => {
+                    const isSelected = (opt === currentStatus) ? 'selected' : '';
+                    optionsHtml += `<option value="${opt}" ${isSelected}>${opt}</option>`;
+                });
 
                 const row = `
                     <tr>
-                        <td class="order-id">#${order.id || 'N/A'}</td>
-                        <td>${order.customer || 'Guest'}</td>
-                        <td>${order.items || 'Unknown Items'}</td>
-                        <td><span class="status-badge ${statusClass}">${order.status || 'Pending'}</span></td>
+                        <td class="order-id">#${rowNum}</td>
+                        <td>${customerName}</td>
+                        <td>${orderItems}</td>
                         <td>
-                            <i class="fa-regular fa-eye action-icon"></i>
-                            <i class="fa-regular fa-pen-to-square action-icon"></i>
+                            <select 
+                                onchange="updateOrderStatus('${rowNum}', this.value)" 
+                                style="padding: 5px; border-radius: 5px; border: 1px solid #ccc; cursor: pointer;"
+                            >
+                                ${optionsHtml}
+                            </select>
+                        </td>
+                        <td>
+                            <i class="fa-regular fa-eye action-icon" title="View Details"></i>
                         </td>
                     </tr>`;
                 orderTableBody.innerHTML += row;
@@ -266,11 +276,82 @@ async function loadAdminData() {
 
     } catch (error) {
         console.error("n8n Load Error:", error);
-        orderTableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:red;">Error loading data: ${error.message}</td></tr>`;
+        orderTableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:red;">Error: ${error.message}</td></tr>`;
     } finally {
-        // 5. Restore Button
         if(refreshBtn) refreshBtn.disabled = false;
         if(refreshIcon) refreshIcon.classList.remove('fa-spin');
+    }
+}
+
+// --- NEW FUNCTION: Update Status ---
+async function updateOrderStatus(rowNumber, newStatus) {
+    // 1. Notify Admin process started
+    const originalTitle = document.title;
+    document.title = "Updating..."; 
+    
+    // alert(`Updating Order #${rowNumber} to ${newStatus}...`);
+    try {
+        const response = await fetch(N8N_UPDATE_STATUS_WEBHOOK, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                row_number: rowNumber,
+                status: newStatus
+            })
+        });
+
+        if (response.ok) {
+            console.log("Status updated successfully");
+            // loadAdminData(); 
+        } else {
+            alert("Failed to update status on server.");
+        }
+    } catch (error) {
+        console.error("Update Error:", error);
+        alert("Could not connect to update server.");
+    } finally {
+        document.title = originalTitle;
+    }
+}
+
+// --- CONTACT FORM LOGIC ---
+async function handleContactSubmit(e) {
+    e.preventDefault();
+    
+    const name = document.getElementById('contact-name').value;
+    const email = document.getElementById('contact-email').value;
+    const message = document.getElementById('contact-message').value;
+    const btn = e.target.querySelector('button');
+    const originalText = btn.innerText;
+
+    // UI Feedback
+    btn.innerText = "Sending...";
+    btn.disabled = true;
+
+    try {
+        const response = await fetch(N8N_CONTACT_WEBHOOK, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                name: name,
+                email: email,
+                message: message,
+                date: new Date().toISOString()
+            })
+        });
+
+        if (response.ok) {
+            alert("Message sent! We will get back to you shortly.");
+            document.getElementById('contact-form').reset();
+        } else {
+            alert("Something went wrong. Please try again later.");
+        }
+    } catch (error) {
+        console.error("Contact Error:", error);
+        alert("Could not connect to the server.");
+    } finally {
+        btn.innerText = originalText;
+        btn.disabled = false;
     }
 }
 
@@ -293,6 +374,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 2. Page Specific Logic
     const refreshBtn = document.getElementById('refresh-btn');
+
+    // CHECK FOR CONTACT FORM
+    const contactForm = document.getElementById('contact-form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', handleContactSubmit);
+    }
     
     if (refreshBtn) {
         // --- WE ARE ON ADMIN PAGE ---
